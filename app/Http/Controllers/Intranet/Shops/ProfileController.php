@@ -38,12 +38,12 @@ class ProfileController extends GlobalShopController
 
                 session()->flash('danger', 'Usuario no encontrado.');
 
-                return redirect()->route('intranet.shops.index', ['velutti']);
+                return redirect()->route('intranet.shops.index', ['prueba']);
             }
 
             return view('intranet.shops.profile.index',['user'=> $user]);
         } else {
-            return redirect()->route('intranet.shops.index', ['velutti']);
+            return redirect()->route('intranet.shops.index', ['prueba']);
         }
     }
 
@@ -56,7 +56,7 @@ class ProfileController extends GlobalShopController
         if (empty($user)) {
             session()->flash('danger', 'Usuario no encontrado.');
 
-            return redirect()->route('intranet.shops.index', ['velutti']);
+            return redirect()->route('intranet.shops.index', ['prueba']);
         }
 
         $this->validate($request, [
