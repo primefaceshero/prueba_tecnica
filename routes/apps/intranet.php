@@ -5,6 +5,7 @@ use App\Http\Controllers\Intranet\Dashboard;
 use App\Http\Controllers\Intranet\Shops\DashboardController;
 use App\Http\Controllers\Intranet\Shops\RoleController;
 use App\Http\Controllers\Intranet\Shops\ProfileController;
+use App\Http\Controllers\TareaController;
 use Illuminate\Support\Facades\Route;
 
 if (!function_exists('getResourceRoutesForNameHelper')) {
@@ -23,6 +24,15 @@ if (!function_exists('getResourceRoutesForNameHelper')) {
     }
 }
 
+Route::get('/tareas', 'TareaController@index')->name('tareas');
+Route::get('/tareas/delete/{id}', 'TareaController@destroy')->name('tareas.destroy');
+Route::get('/tareas/create', 'TareaController@create')->name('tareas.create');
+Route::get('/tareas/edit/{id}', 'TareaController@edit')->name('tareas.edit');
+Route::get('/tareas/show/{id}', 'TareaController@show')->name('tareas.show');
+Route::post('/tareas/store', 'TareaController@store')->name('tareas.store');
+Route::post('/tareas/update', 'TareaController@update')->name('tareas.update');
+Route::resource('/tareas', TareaController::class, ['names' => getResourceRoutesForNameHelper('tareas')]);
+
 
 Route::name('intranet.')
     ->prefix('intranet')
@@ -34,6 +44,7 @@ Route::name('intranet.')
             'change-status' => 'cambiar-estado',
         ]);
 
+      
 //        AUTH ROUTES
 
         Route::get('/acceso', [AuthController::class, 'show'])->name('auth.show');
@@ -63,13 +74,16 @@ Route::name('intranet.')
 
             Route::post('tiendas/{shop}/roles/active', [RoleController::class, 'active'])->name('shops.roles.active');
             Route::post('tiendas/{shop}/roles/change-status', [RoleController::class, 'changeStatus'])->name('shops.roles.changeStatus');
+            
             Route::resource('tiendas/{shop}/roles', RoleController::class, ['names' => getResourceRoutesForNameHelper('shops.roles')]);
-
+            
+            
         });
 
         Route::group(['middleware' => ['auth:intranet', 'auth.intranet']], function () {
 
             Route::get('/', [Dashboard::class, 'index'])->name('dashboard');
+            
 
         });
     });
